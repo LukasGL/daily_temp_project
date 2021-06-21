@@ -32,6 +32,20 @@ summer_all = UNION summer_nh, summer_sh;
 fall_all = UNION fall_nh, fall_sh;
 winter_all = UNION winter_nh, winter_sh;
 
+-- INTERVALO 1
+-- spring
+spring_1 = FILTER spring_all BY year>=1995 AND year<2000;
+-- summer
+summer_1 = FILTER spring_all BY year>=1995 AND year<=2000;
+-- fall
+fall_1 = FILTER fall_all BY year>=1995 AND year<2000;
+-- winter
+winter_1 = FILTER winter_all BY year>=1995 AND year<2000;
+
+
+
+
+
 group_year_region = GROUP dataset_fix BY (year, region);
 average_temp_by_year_region = FOREACH group_year_region {
     unique_cities = DISTINCT dataset_fix.city;
