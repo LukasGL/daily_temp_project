@@ -14,7 +14,6 @@ count_country_by_region = FOREACH  group_region {
     GENERATE group, COUNT(unique_countries_2) AS country_count;
 };
 
-DUMP count_country_by_region;
 h_month_na = ORDER avg_month_na BY $1 DESC;
 
 spring_nh = FILTER nh BY month>=3 and month<=5;
@@ -32,15 +31,67 @@ summer_all = UNION summer_nh, summer_sh;
 fall_all = UNION fall_nh, fall_sh;
 winter_all = UNION winter_nh, winter_sh;
 
+-- AVG BY YEAR BY SEASON
+spring_group_by_year = GROUP spring_all BY year;
+spring_avg_by_year = FOREACH spring_group_by_year GENERATE group, AVG(spring_all.avgtemperature);
+summer_group_by_year = GROUP summer_all BY year;
+summer_avg_by_year = FOREACH summer_group_by_year GENERATE group, AVG(summer_all.avgtemperature);
+fall_group_by_year = GROUP fall_all BY year;
+fall_avg_by_year = FOREACH fall_group_by_year GENERATE group, AVG(fall_all.avgtemperature);
+winter_group_by_year = GROUP winter_all BY year;
+winter_avg_by_year = FOREACH winter_group_by_year GENERATE group, AVG(winter_all.avgtemperature);
+
 -- INTERVALO 1
 -- spring
 spring_1 = FILTER spring_all BY year>=1995 AND year<2000;
+spring_1_group = GROUP spring_1 ALL;
+spring_1_avg = FOREACH spring_1_group GENERATE AVG(spring_1.avgtemperature);
 -- summer
 summer_1 = FILTER spring_all BY year>=1995 AND year<=2000;
 -- fall
 fall_1 = FILTER fall_all BY year>=1995 AND year<2000;
 -- winter
 winter_1 = FILTER winter_all BY year>=1995 AND year<2000;
+
+-- INTERVALO 2
+-- spring
+spring_1 = FILTER spring_all BY year>=2000 AND year<2005;
+-- summer
+summer_1 = FILTER spring_all BY year>=2000 AND year<=2005;
+-- fall
+fall_1 = FILTER fall_all BY year>=2000 AND year<2005;
+-- winter
+winter_1 = FILTER winter_all BY year>=2000 AND year<2005;
+
+-- INTERVALO 3
+-- spring
+spring_1 = FILTER spring_all BY year>=2005 AND year<2010;
+-- summer
+summer_1 = FILTER spring_all BY year>=2005 AND year<=2010;
+-- fall
+fall_1 = FILTER fall_all BY year>=2005 AND year<2010;
+-- winter
+winter_1 = FILTER winter_all BY year>=2005 AND year<2010;
+
+-- INTERVALO 4
+-- spring
+spring_1 = FILTER spring_all BY year>=2010 AND year<2015;
+-- summer
+summer_1 = FILTER spring_all BY year>=2010 AND year<=2015;
+-- fall
+fall_1 = FILTER fall_all BY year>=2010 AND year<2015;
+-- winter
+winter_1 = FILTER winter_all BY year>=2010 AND year<2015;
+
+-- INTERVALO 3
+-- spring
+spring_1 = FILTER spring_all BY year>=2015 AND year<2020;
+-- summer
+summer_1 = FILTER spring_all BY year>=2015 AND year<=2020;
+-- fall
+fall_1 = FILTER fall_all BY year>=2015 AND year<2020;
+-- winter
+winter_1 = FILTER winter_all BY year>=2015 AND year<2020;
 
 
 
