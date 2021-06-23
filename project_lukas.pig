@@ -8,23 +8,15 @@ data_lat = JOIN dataset_fix by (city, country), citylatlong by (city,country);
 nh = FILTER data_lat BY (lat>0);
 sh = FILTER data_lat BY (lat<0);
 
-group_region = GROUP dataset_fix BY region;
-count_country_by_region = FOREACH  group_region {
-    unique_countries_2 = DISTINCT dataset_fix.country;
-    GENERATE group, COUNT(unique_countries_2) AS country_count;
-};
-
-h_month_na = ORDER avg_month_na BY $1 DESC;
-
 spring_nh = FILTER nh BY month>=3 and month<=5;
 summer_nh = FILTER nh BY month>=6 and month<=8;
 fall_nh = FILTER nh BY month>=9 and month<=11;
 winter_nh = FILTER nh BY month>=12 and month<=2;
 
-spring_sh = FILTER nh BY month>=9 and month<=11;
-summer_sh = FILTER nh BY month>=12 and month<=2;
-fall_sh = FILTER nh BY month>=3 and month<=5;
-winter_sh = FILTER nh BY month>=6 and month<=8;
+spring_sh = FILTER sh BY month>=9 and month<=11;
+summer_sh = FILTER sh BY month>=12 and month<=2;
+fall_sh = FILTER sh BY month>=3 and month<=5;
+winter_sh = FILTER sh BY month>=6 and month<=8;
 
 spring_all = UNION spring_nh, spring_sh;
 summer_all = UNION summer_nh, summer_sh;
@@ -43,8 +35,8 @@ winter_avg_by_year = FOREACH winter_group_by_year GENERATE group, AVG(winter_all
 
 
 -- TOP 20 cities with max in summer
-summer_city_and_temp = FOREACH summer_all GENERATE city, avgtemperature;
-summer_sort_by_city = ORDER summer_city_and_temp DESC;
+summer_city_and_temp = FOREACH summer_all GENERATE dataset_fix:city as city, dataset_fix:avgtemperature as avgtemperature;
+summer_sort_by_city = ORDER summer_city_and_temp BY avgtemperature DESC;
 summer_limit = LIMIT summer_sort_by_city 20;
 
 -- TOP 20 cities with min in winter
