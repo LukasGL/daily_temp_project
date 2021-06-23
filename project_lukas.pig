@@ -41,61 +41,18 @@ fall_avg_by_year = FOREACH fall_group_by_year GENERATE group, AVG(fall_all.avgte
 winter_group_by_year = GROUP winter_all BY year;
 winter_avg_by_year = FOREACH winter_group_by_year GENERATE group, AVG(winter_all.avgtemperature);
 
--- INTERVALO 1
--- spring
-spring_1 = FILTER spring_all BY year>=1995 AND year<2000;
-spring_1_group = GROUP spring_1 ALL;
-spring_1_avg = FOREACH spring_1_group GENERATE AVG(spring_1.avgtemperature);
--- summer
-summer_1 = FILTER spring_all BY year>=1995 AND year<=2000;
--- fall
-fall_1 = FILTER fall_all BY year>=1995 AND year<2000;
--- winter
-winter_1 = FILTER winter_all BY year>=1995 AND year<2000;
 
--- INTERVALO 2
--- spring
-spring_1 = FILTER spring_all BY year>=2000 AND year<2005;
--- summer
-summer_1 = FILTER spring_all BY year>=2000 AND year<=2005;
--- fall
-fall_1 = FILTER fall_all BY year>=2000 AND year<2005;
--- winter
-winter_1 = FILTER winter_all BY year>=2000 AND year<2005;
+-- TOP 20 cities with max in summer
+summer_city_and_temp = FOREACH summer_all GENERATE city, avgtemperature;
+summer_sort_by_city = ORDER summer_city_and_temp DESC;
+summer_limit = LIMIT summer_sort_by_city 20;
 
--- INTERVALO 3
--- spring
-spring_1 = FILTER spring_all BY year>=2005 AND year<2010;
--- summer
-summer_1 = FILTER spring_all BY year>=2005 AND year<=2010;
--- fall
-fall_1 = FILTER fall_all BY year>=2005 AND year<2010;
--- winter
-winter_1 = FILTER winter_all BY year>=2005 AND year<2010;
+-- TOP 20 cities with min in winter
+winter_city_and_temp = FOREACH winter_all GENERATE city, avgtemperature;
+winter_sort_by_city = ORDER winter_city_and_temp ASC;
+winter_limit = LIMIT winter_sort_by_city 20;
 
--- INTERVALO 4
--- spring
-spring_1 = FILTER spring_all BY year>=2010 AND year<2015;
--- summer
-summer_1 = FILTER spring_all BY year>=2010 AND year<=2015;
--- fall
-fall_1 = FILTER fall_all BY year>=2010 AND year<2015;
--- winter
-winter_1 = FILTER winter_all BY year>=2010 AND year<2015;
-
--- INTERVALO 3
--- spring
-spring_1 = FILTER spring_all BY year>=2015 AND year<2020;
--- summer
-summer_1 = FILTER spring_all BY year>=2015 AND year<=2020;
--- fall
-fall_1 = FILTER fall_all BY year>=2015 AND year<2020;
--- winter
-winter_1 = FILTER winter_all BY year>=2015 AND year<2020;
-
-
-
-
+DUMP summer_limit;
 
 group_year_region = GROUP dataset_fix BY (year, region);
 average_temp_by_year_region = FOREACH group_year_region {
