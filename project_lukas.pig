@@ -11,12 +11,12 @@ sh = FILTER data_lat BY (lat<0);
 spring_nh = FILTER nh BY month>=3 and month<=5;
 summer_nh = FILTER nh BY month>=6 and month<=8;
 fall_nh = FILTER nh BY month>=9 and month<=11;
-winter_nh = FILTER nh BY month>=12 and month<=2;
+winter_nh = FILTER nh BY month>=12 OR month<=2;
 
 spring_sh = FILTER sh BY month>=9 and month<=11;
-summer_sh = FILTER sh BY month>=12 and month<=2;
+summer_sh = FILTER sh BY month>=12 OR month<=2;
 fall_sh = FILTER sh BY month>=3 and month<=5;
-winter_sh = FILTER sh BY month>=6 and month<=8;
+winter_sh = FILTER sh BY month>=6 AND month<=8;
 
 spring_all = UNION spring_nh, spring_sh;
 summer_all = UNION summer_nh, summer_sh;
