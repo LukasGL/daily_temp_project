@@ -41,7 +41,7 @@ summer_all_limit = LIMIT summer_all_sort 20;
 
 -- TOP 20 distinct cities with min in winter -- FUNCIONA
 winter_group_by_city = GROUP winter_all BY (dataset_fix::city, dataset_fix::country);
-winter_max_by_city = FOREACH winter_group_by_city GENERATE group, MIN(winter_all.avgtemperature) as mintemperature;
+winter_max_by_city = FOREACH winter_group_by_city GENERATE group.$0, group.$1, MIN(winter_all.avgtemperature) as mintemperature;
 winter_all_sort = ORDER winter_max_by_city BY mintemperature ASC;
 winter_all_limit = LIMIT winter_all_sort 20;
 
