@@ -46,8 +46,10 @@ winter_all_sort = ORDER winter_max_by_city BY mintemperature ASC;
 winter_all_limit = LIMIT winter_all_sort 20;
 
 -- TOP 10 ciudades con mayor variacion de temperaturas
-summer_var_by_city = GROUP summer_all BY (dataset_fix::city, dataset_fix::country);
-summer_var_value = FOREACH summer_var_by_city GENERATE group.$0, group.$1, (MAX(summer_all.avgtemperature)-MIN(summer_all.avgtemperature)) as vartemperature;
+spring_group_by_year = GROUP spring_all BY year;
+spring_avg_by_year = FOREACH spring_group_by_year GENERATE group, AVG(spring_all.avgtemperature) as temp, spring_all.dataset_fix::city as city, spring_all.dataset_fix::country as country;
+summer_var_by_city = GROUP spring_avg_by_year BY (city, country);
+summer_var_value = FOREACH summer_var_by_city GENERATE group.$0, group.$1, (MAX(spring_avg_by_year.temp)-MIN(spring_avg_by_year.temp)) as vartemperature;
 summer_var_sort = ORDER summer_var_value BY vartemperature DESC;
 summer_var_limit = LIMIT summer_var_sort 5;
 
